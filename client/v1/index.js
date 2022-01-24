@@ -177,7 +177,12 @@ for(const key in brands){
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
 
-
+for(const key in brands){
+  brands[key]=brands[key].sort((a,b)=> {
+    return Date.parse(a.date)-Date.parse(b.date);
+  });
+  console.table(brands[key])
+}
 
 
 
