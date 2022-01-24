@@ -94,8 +94,12 @@ console.table(sortedMarket);
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
+let sortedMarketDate=marketplace.sort((a,b)=>{
+  return Date.parse(b.date)-Date.parse(a.date);
+});
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
+console.table(sortedMarketDate)
 
 
 // 🎯 TODO: Filter a specific price range
