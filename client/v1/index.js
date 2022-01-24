@@ -104,8 +104,11 @@ console.table(sortedMarketDate)
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
+let filtered = marketplace.filter(function (obj){
+  return obj.price>=50 && obj.price<=100;
+})
 // 2. Log the list
-
+console.table(filtered);
 
 // 🎯 TODO: Average price
 // 1. Determine the average price of the marketplace
