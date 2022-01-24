@@ -112,7 +112,13 @@ console.table(filtered);
 
 // 🎯 TODO: Average price
 // 1. Determine the average price of the marketplace
+let avg=0
+for(const obj of marketplace){
+  avg=avg+obj.price;
+}
+avg=avg/marketplace.length;
 // 2. Log the average
+console.log(avg);
 
 
 
