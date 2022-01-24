@@ -144,7 +144,21 @@ console.log(avg);
 //   'brand-name-n': [{...}, {...}, ..., {...}],
 // };
 //
+let brands = {}
+for(const obj of brand){
+  let array=[];
+  for(const prod of marketplace){
+    if(prod.brand==obj){
+      array.push(prod)
+    }
+  }
+  brands[obj]=array;
+  console.log(obj);
+  console.table(array);
+  console.log(array.length);
+}
 // 2. Log the variable
+
 // 3. Log the number of products by brands
 
 
