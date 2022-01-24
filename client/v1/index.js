@@ -197,8 +197,22 @@ for(const key in brands){
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
-
-
+for(const key in brands){
+  brands[key]=brands[key].sort((a,b)=> {
+    return b.price-a.price;
+  });
+  let nb=0.9*brands[key].length;
+  let i = 0;
+  for(const obj of brands[key]){
+    i=i+1;
+    if(nb<=i){
+      console.log(key)
+      console.log(obj.price);
+      nb=brands[key].length+1;
+    }
+  }
+}
+//while would have been better but no experience in java script
 
 
 /**
@@ -272,12 +286,24 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
-
+let newProd=false
+for(const obj of COTELE_PARIS){
+  if(Date.now-Date.parse(obj.released)<1209600000){
+    newProd=true;
+  }
+}
+console.log(newProd);
 
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
-
+let reasonAble=true;
+for(const obj of COTELE_PARIS){
+  if(obj.price>=100){
+    reasonAble=false;
+  }
+}
+console.log(reasonAble);
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
