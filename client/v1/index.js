@@ -164,6 +164,12 @@ for(const obj of brand){
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
+for(const key in brands){
+  brands[key]=brands[key].sort((a,b)=> {
+    return b.price-a.price;
+  });
+  console.table(brands[key])
+}
 // 2. Log the sort
 
 
