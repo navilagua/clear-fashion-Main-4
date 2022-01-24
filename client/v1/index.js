@@ -78,16 +78,19 @@ for(const obj of marketplace){
 }
 
 // 2. Log the variable
-console.table(brand)
+console.table(brand);
 // 3. Log how many brands we have
-console.log(brand.length)
+console.log(brand.length);
 
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
+let sortedMarket=marketplace.sort((a,b)=> {
+  return a.price-b.price;
+});
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
-
+console.table(sortedMarket);
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
