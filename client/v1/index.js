@@ -308,11 +308,31 @@ console.log(reasonAble);
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
+let target = null;
+let i=0;
+while(i<COTELE_PARIS.length){
+  if(COTELE_PARIS[i].uuid==='b56c6d88-749a-5b4c-b571-e5b5c6483131'){
+    
+    
+    target = COTELE_PARIS[i];
+    i=COTELE_PARIS.length;
+  }
+  i++;
 
+}
+console.log(target);
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the new list of product
+for( i = 0; i < COTELE_PARIS.length; i++){ 
+    
+  if ( COTELE_PARIS[i] === `b56c6d88-749a-5b4c-b571-e5b5c6483131`) { 
+
+      COTELE_PARIS.splice(i, 1); 
+  }
+}
+console.table(COTELE_PARIS);
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -326,7 +346,7 @@ let blueJacket = {
 let jacket = blueJacket;
 
 jacket.favorite = true;
-
+console.log(jacket);
 // 1. Log `blueJacket` and `jacket` variables
 // 2. What do you notice?
 
@@ -335,7 +355,8 @@ blueJacket = {
   'price': 110,
   'uuid': 'b4b05398-fee0-4b31-90fe-a794d2ccfaaa'
 };
-
+blueJacket.favorite=true;
+console.log(blueJacket);
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
 
 
