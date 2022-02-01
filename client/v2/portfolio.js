@@ -8,6 +8,9 @@ let currentPagination = {};
 // inititiqte selectors
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
+const selectSort = document.querySelector('#sort-select');
+const selectBrand = document.querySelector('#brand-select');
+
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 
@@ -19,6 +22,8 @@ const spanNbProducts = document.querySelector('#nbProducts');
 const setCurrentProducts = ({result, meta}) => {
   currentProducts = result;
   currentPagination = meta;
+
+  currentPagination.pageCount = 10; // Feature 1: Page selection
 };
 
 /**
@@ -51,24 +56,46 @@ const fetchProducts = async (page = 1, size = 12) => {
  * @param  {Array} products
  */
 const renderProducts = products => {
-  const fragment = document.createDocumentFragment();
-  const div = document.createElement('div');
-  const template = products
-    .map(product => {
-      return `
-      <div class="product" id=${product.uuid}>
-        <span>${product.brand}</span>
-        <a href="${product.link}">${product.name}</a>
-        <span>${product.price}</span>
-      </div>
-    `;
-    })
-    .join('');
+  // const fragment = document.createDocumentFragment();
+  // const div = document.createElement('div');
+  // const template = products
+  //   .map(product => {
+  //     return `
+  //     <div class="product" id=${product.uuid}>
+  //       <span>${product.brand}</span>
+  //       <a href="${product.link}">${product.name}</a>
+  //       <span>${product.price}</span>
+  //       <span>${product.released}</span>
+  //     </div>
+  //   `;
+  //   })
+  //   .join('');
+  
+  const table = document.createElement('table');
+  table.style.width = '100px';
+  table.style.border = '1px solid black';
+  let head = table.createTHead();
+  let row = head.insertRow();
+  for (let key of Object.keys(products[0])) {
+    let th = document.createElement("th");
+    let text = document.createTextNode(key);
+    th.appendChild(text);
+    row.appendChild(th);
+  }
 
-  div.innerHTML = template;
-  fragment.appendChild(div);
+  products.forEach(function(i, ind) {
+    let row = table.insertRow();
+    for (let key in i) {
+      let cell = row.insertCell();
+      let text = document.createTextNode(i[key]);
+      cell.appendChild(text);
+    }
+  })
+
+  // div.innerHTML = template;
+  // fragment.appendChild(div);
   sectionProducts.innerHTML = '<h2>Products</h2>';
-  sectionProducts.appendChild(fragment);
+  sectionProducts.appendChild(table);
 };
 
 /**
@@ -115,6 +142,25 @@ selectShow.addEventListener('change', event => {
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
+
+selectPage.addEventListener('change', event => {
+  currentPagination.currentPage = selectPage.selectedIndex + 1;
+
+  fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
+    .then(setCurrentProducts)
+    .then(() => render(currentProducts, currentPagination));
+});
+
+selectSort.addEventListener('change', event => {
+  currentProducts.sort((x, y) => selectSort.selectedIndex == 0 ? (x.price > y.price ? 1 : -1) : 
+                                  selectSort.selectedIndex == 1 ? (x.price < y.price ? 1 : -1) : 
+                                  selectSort.selectedIndex == 2 ? (new Date(x.released) > new Date(y.released)  ? 1 : -1) : 
+                                  (new Date(x.released) < new Date(y.released) ? 1 : -1)
+      ); // Feature 5 Product sorting
+  
+    render(currentProducts, currentPagination);
+});
+
 
 document.addEventListener('DOMContentLoaded', () =>
   fetchProducts()
