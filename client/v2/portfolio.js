@@ -358,7 +358,14 @@ selectPage.addEventListener('change', event => {
  */
 selectSort.addEventListener('change', event => {
   choices.sort = selectSort.selectedOptions[0].value;
+  if (selectFavorite.checked)
+  {
+    render(fav, currentPagination);
+  }
+  else
+  {
     render(currentProducts, currentPagination);
+  }
 });
 
 /**
@@ -367,7 +374,14 @@ selectSort.addEventListener('change', event => {
  */
 selectBrand.addEventListener('change', event => {
   choices.brands = selectBrand.selectedIndex;
+  if (selectFavorite.checked)
+  {
+    render(fav, currentPagination);
+  }
+  else
+  {
     render(currentProducts, currentPagination);
+  }
 });
 
 /**
@@ -376,7 +390,14 @@ selectBrand.addEventListener('change', event => {
  */
  selectRecently.addEventListener('change', event => {
   choices.recently_released = selectRecently.checked;
+  if (selectFavorite.checked)
+  {
+    render(fav, currentPagination);
+  }
+  else
+  {
     render(currentProducts, currentPagination);
+  }
 });
 
 /**
@@ -385,7 +406,14 @@ selectBrand.addEventListener('change', event => {
  */
 selectReasonable.addEventListener('change', event => {
   choices.reasonable_price = selectReasonable.checked;
+  if (selectFavorite.checked)
+  {
+    render(fav, currentPagination);
+  }
+  else
+  {
     render(currentProducts, currentPagination);
+  }
 });
 
 /**
