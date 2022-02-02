@@ -299,7 +299,7 @@ const renderIndicators = pagination => {
 const renderFilters = () => {
   let selectedVal = uniqueBrands[choices.brands];
   uniqueBrands = ["All"]; 
-  Array.prototype.push.apply(uniqueBrands, [...new Set(currentProducts.map(item => item.brand))]);
+  Array.prototype.push.apply(uniqueBrands, [...new Set(selectFavorite.checked ? fav.map(item => item.brand) : currentProducts.map(item => item.brand))]);
   
   const options = Array.from(
     uniqueBrands,
