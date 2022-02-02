@@ -185,7 +185,7 @@ const renderProducts = products => {
           fav.push(currentProducts.filter(x => x.name ==  id)[0]);
         }
         else{
-          fav.splice(fav.findIndex(item => item.name != id), 1)
+          fav.splice(fav.findIndex(item => item.name == id), 1)
         }
       })
       cell.appendChild(checkbox);
