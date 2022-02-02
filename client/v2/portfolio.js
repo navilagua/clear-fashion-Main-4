@@ -7,10 +7,14 @@ let currentPagination = {};
 let choices = {reasonable_price : false, recently_released : false, brands : 0, sort : "Name"};
 
 
+//Unique brands
 let uniqueBrands = ["All"]; 
 Array.prototype.push.apply(uniqueBrands, [...new Set(currentProducts.map(item => item.brand))]);
-console.log(uniqueBrands);
-// inititiqte selectors;
+
+//fav
+import { fav } from "../v2/favorites.js";
+
+// inititiate selectors;
 const selectShow = document.querySelector('#show-select');
 const selectPage = document.querySelector('#page-select');
 const selectSort = document.querySelector('#sort-select');
@@ -18,9 +22,15 @@ const selectBrand = document.querySelector('#brand-select');
 
 const selectRecently = document.querySelector('#recently-select');
 const selectReasonable = document.querySelector('#reasonable-select');
+const selectFavorite = document.querySelector('#favorite-select');
 
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
+const spanNewProducts = document.querySelector('#newProducts');
+const spanP50 = document.querySelector('#p50');
+const spanP90 = document.querySelector('#p90');
+const spanP95 = document.querySelector('#p95');
+const spanLastDate = document.querySelector('#lastDate');
 
 /**
  * Set global value
@@ -68,13 +78,6 @@ const fetchProducts = async (page, size) => {
 const renderProducts = products => {
   products = products.filter((o, index) => choices.brands == 0 || o.brand == uniqueBrands[choices.brands]);
 
-  products.sort((x, y) => choices.sort == "price-asc" ? (x.price > y.price ? 1 : -1) : 
-                          choices.sort == "price-desc" ? (x.price < y.price ? 1 : -1) : 
-                          choices.sort == "date-asc" ? (new Date(x.released) < new Date(y.released)  ? 1 : -1) : 
-                          choices.sort == "date-desc" ?  (new Date(x.released) > new Date(y.released) ? 1 : -1) :
-                          x.name > y.name ? 1 : -1
-      );
-
   if (choices.reasonable_price)
   {
     products = products.filter((o, index) => o.price < 50);
@@ -86,32 +89,127 @@ const renderProducts = products => {
     products = products.filter((o, index) => new Date(o.released) > d);
   }
 
+  products.sort((x, y) => choices.sort == "price-asc" ? (x.price > y.price ? 1 : -1) : 
+                          choices.sort == "price-desc" ? (x.price < y.price ? 1 : -1) : 
+                          choices.sort == "date-asc" ? (new Date(x.released) < new Date(y.released)  ? 1 : -1) : 
+                          choices.sort == "date-desc" ?  (new Date(x.released) > new Date(y.released) ? 1 : -1) :
+                          x.name > y.name ? 1 : -1
+      );
+
+
   sectionProducts.innerHTML = '<h2>Products</h2>';
   if (products.length > 0)
   {
     const table = document.createElement('table');
-    table.style.width = '100px';
+    table.className = 'styled-table';
+    table.style.maxWidth = '1200px';
     table.style.border = '1px solid black';
+    table.style.marginLeft = 'auto';
+    table.style.marginRight = 'auto';
     let head = table.createTHead();
+    head.style.textAlign = 'center';
     let row = head.insertRow();
-    for (let key of Object.keys(products[0])) {
+    // for (let key of Object.keys(products[0])) {
+    //   let th = document.createElement("th");
+    //   let text = document.createTextNode(key);
+    //   th.appendChild(text);
+    //   row.appendChild(th);
+    // }
+    // products.forEach(function(i, ind) {
+    //   let row = table.insertRow();
+    //   for (let key in i) {
+    //     let cell = row.insertCell();
+    //     let text = document.createTextNode(i[key]);
+    //     cell.appendChild(text);
+    //   }
+    // });
+
+    let properties = ["Picture", "Brand", "Name", "Price", "Date released", "Favorite"];
+    for (let i = 0; i < properties.length; i++)
+    {
       let th = document.createElement("th");
-      let text = document.createTextNode(key);
+      let text = document.createTextNode(properties[i]);
       th.appendChild(text);
       row.appendChild(th);
     }
+    
+    
+    let body = table.createTBody();
+    products.forEach(function(obj, i) {
+      let row = body.insertRow();
+      let cell = row.insertCell();
+      let link = document.createElement('a');
+      link.href = obj.link;
+      let linkImage = document.createElement("img");
+
+      checkIfImageExists(obj.photo, exists => {
+        if (exists)
+        {
+          linkImage.src = obj.photo;
+        }
+        else
+        {
+          linkImage.src = "https://4.bp.blogspot.com/-OCutvC4wPps/XfNnRz5PvhI/AAAAAAAAEfo/qJ8P1sqLWesMdOSiEoUH85s3hs_vn97HACLcBGAsYHQ/s1600/no-image-found-360x260.png";
+        }
+      });
+      linkImage.style.width = '200px';
+      linkImage.style.height = '200px';
+      
+      link.appendChild(linkImage);
+      cell.appendChild(link);
+
+      cell = row.insertCell();
+      cell.id = "brand";
+      cell.appendChild(document.createTextNode(obj.brand));
+      
+      cell = row.insertCell();
+      cell.id = "name";
+      cell.appendChild(document.createTextNode(obj.name));
+      
+      cell = row.insertCell();
+      cell.id = "price";
+      cell.appendChild(document.createTextNode(obj.price + "€"));
+      
+      cell = row.insertCell();
+      cell.id = "date";
+      cell.appendChild(document.createTextNode(formatDate(new Date(obj.released))));
+
+      cell = row.insertCell();
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "table-checkbox";
+      checkbox.checked = fav.some(x => x.uuid === obj.uuid);
+      checkbox.addEventListener('change', e => {
+        let id = e.path[2].cells[2].innerText;
+        if (e.currentTarget.checked){
+          fav.push(currentProducts.filter(x => x.name ==  id)[0]);
+        }
+        else{
+          fav.splice(fav.findIndex(item => item.name != id), 1)
+        }
+      })
+      cell.appendChild(checkbox);
+    });
+
+    var td = table.rows[0].cells[0]; //Image
+    td.width = '250px';
+
+    var td = table.rows[0].cells[1]; //Brand
+    td.width = '100px';
+
+    var td = table.rows[0].cells[2]; //Name
+    td.width = '300px';
+
+    var td = table.rows[0].cells[3]; //Price
+    td.width = '50px';
+
+    var td = table.rows[0].cells[4]; //Date
+    td.width = '150px';
+
+    var td = table.rows[0].cells[5]; //Fav
+    td.width = '50px';
+    
   
-    products.forEach(function(i, ind) {
-      let row = table.insertRow();
-      for (let key in i) {
-        let cell = row.insertCell();
-        let text = document.createTextNode(i[key]);
-        cell.appendChild(text);
-      }
-    })
-  
-    // div.innerHTML = template;
-    // fragment.appendChild(div);
     sectionProducts.appendChild(table);
   }
   else
@@ -122,6 +220,38 @@ const renderProducts = products => {
   }
 
 };
+
+/** Funcs helper */
+
+function checkIfImageExists(url, callback) {
+  const img = new Image();
+
+  img.src = url;
+
+  if (img.complete) {
+    callback(true);
+  } else {
+    img.onload = () => {
+      callback(true);
+    };
+    
+    img.onerror = () => {
+      callback(false);
+    };
+  }
+}
+
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date) {
+  return [
+    padTo2Digits(date.getDate()),
+    padTo2Digits(date.getMonth() + 1),
+    date.getFullYear(),
+  ].join('/');
+}
 
 /**
  * Render page selector
@@ -143,9 +273,27 @@ const renderPagination = pagination => {
  * @param  {Object} pagination
  */
 const renderIndicators = pagination => {
-  const {count} = pagination;
+  const {count} = pagination; //count
+
+  var d = new Date();
+  d.setDate(d.getDate() - 14);
+  let newProd = currentProducts.filter((o, index) => new Date(o.released) > d).length;
+
+  let products = [...currentProducts];
+  products.sort((x, y) => x.price > y.price ? 1 : -1);
+  let p5OPrice = products[(products.length * 50 / 100) | 0].price;
+  let p90Price = products[(products.length * 90 / 100) | 0].price;
+  let p95Price = products[(products.length * 95 / 100) | 0].price;
+
+  products.sort((x, y) => new Date(x.released) < new Date(y.released)  ? 1 : -1);
+  let lastReleased = products[0].released;
 
   spanNbProducts.innerHTML = count;
+  spanNewProducts.innerHTML = newProd;
+  spanP50.innerHTML = p5OPrice + "€";
+  spanP90.innerHTML = p90Price + "€";
+  spanP95.innerHTML = p95Price + "€";
+  spanLastDate.innerHTML = formatDate(new Date(lastReleased));
 };
 
 const renderFilters = () => {
@@ -223,7 +371,7 @@ selectBrand.addEventListener('change', event => {
 });
 
 /**
- * Select the filtering by brand
+ * Select the filtering by recently released
  * @type {[type]}
  */
  selectRecently.addEventListener('change', event => {
@@ -232,13 +380,30 @@ selectBrand.addEventListener('change', event => {
 });
 
 /**
- * Select the filtering by brand
+ * Select the filtering by reasonable price
  * @type {[type]}
  */
 selectReasonable.addEventListener('change', event => {
   choices.reasonable_price = selectReasonable.checked;
     render(currentProducts, currentPagination);
 });
+
+/**
+ * Select the filtering by reasonable price
+ * @type {[type]}
+ */
+selectFavorite.addEventListener('change', event => {
+  if (selectFavorite.checked)
+  {
+    render(fav, currentPagination);
+  }
+  else
+  {
+    render(currentProducts, currentPagination);
+  }
+});
+
+
 
 
 document.addEventListener('DOMContentLoaded', () =>
