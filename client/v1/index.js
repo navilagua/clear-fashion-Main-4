@@ -359,8 +359,17 @@ blueJacket.favorite=true;
 console.log(blueJacket);
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
 
+jacket = {};
+Object.keys(blueJacket).forEach(x => jacket[x] = blueJacket[x]);
+jacket.favorite = true;
 
+console.log('Blue jacket');
+console.table(blueJacket);
 
+console.log('Jacket');
+console.table(jacket);
+
+console.log("Done");
 
 
 /**
