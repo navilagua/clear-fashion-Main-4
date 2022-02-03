@@ -100,6 +100,7 @@ const renderProducts = products => {
 
   if (products.length > 0)
   {
+    $('.styled-table').remove();
     const table = document.createElement('table');
     table.className = 'styled-table';
     let head = table.createTHead();
