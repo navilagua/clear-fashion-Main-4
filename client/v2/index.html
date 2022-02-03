@@ -8,77 +8,77 @@
   </head>
   <body>
     <h1>Clear fashion</h1>
-    <section id="options">
-      <div id="show">
-        <label for="show-select">Show:</label>
-        <select name="show" id="show-select">
-          <option value="12">12</option>
-          <option value="24">24</option>
-          <option value="48">48</option>
-        </select>
-      </div>
-      <div id="page">
-        <label for="page-select">Go to page:</label>
-        <select name="page" id="page-select"> 
-        </select>
-      </div>
-      <div id="filters">
-        <label class="switch">
-          <input type="checkbox" id="reasonable-select">
-          <span class="slider">By reasonable price</span>
-        </label>
-        <label class="switch">
-          <input type="checkbox" id="recently-select">
-          <span class="slider">By recently released</span>
-        </label>
-        <label class="switch">
-          <input type="checkbox" id="favorite-select">
-          <span class="slider">By favorite</span>
-        </label>
-        <div id="brand">
-          <label for="brand-select">By brands:</label>
-          <select name="brand" id="brand-select"> </select>
-        </div>
-      </div>
-      <div id="sort">
-        <label for="sort-select">Sort:</label>
-        <select name="sort" id="sort-select">
-          <option value="name-asc">Name</option>
-          <option value="price-asc">Cheaper</option>
-          <option value="price-desc">Expensive</option>
-          <option value="date-asc">Recently released</option>
-          <option value="date-desc">Anciently released</option>
-        </select>
-      </div>
-    </section>
     <section id="indicators">
       <h2>Indicators</h2>
-      <div>
-        <span>Number of products</span>
-        <span id="nbProducts">0</span>
-      </div>
-      <div>
-        <span>Number of new products</span>
-        <span id="newProducts">0</span>
-      </div>
-      <div>
-        <span>p50 price value</span>
-        <span id="p50">0</span>
-      </div>
-      <div>
-        <span>p90 price value</span>
-        <span id="p90">0</span>
-      </div>
-      <div>
-        <span>p95 price value</span>
-        <span id="p95">0</span>
-      </div>
-      <div>
-        <span>Last released date</span>
-        <span id="lastDate">2020-01-01</span>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Number of products</th>
+            <th>Number of new products</th>
+            <th>p50 price value</th>
+            <th>p90 price value</th>
+            <th>p95 price value</th>
+            <th>Last released date</th>
+          </tr>
+        </thead>
+       <tbody>
+          <tr>
+           <td id="nbProducts">0</td>
+           <td id="newProducts">0</td>
+           <td id="p50">0€</td>
+           <td id="p90">0€</td>
+           <td id="p95">0€</td>
+           <td id="lastDate">/</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
-    <section id="products"></section>
+    <h2>Products</h2>
+    <section id="options">
+        <div id="show">
+          <label for="show-select">Show:</label>
+          <select name="show" id="show-select">
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="48">48</option>
+          </select>
+        </div>
+        <div id="page">
+          <label for="page-select">Go to page:</label>
+          <select name="page" id="page-select"> 
+          </select>
+        </div>
+        <div id="filters">
+          <label class="switch">
+            <input type="checkbox" id="reasonable-select">
+            <span class="slider">By reasonable price</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="recently-select">
+            <span class="slider">Filter by recently released</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="favorite-select">
+            <span class="slider">Filter by favorite</span>
+          </label>
+          <div id="brand">
+            <label for="brand-select">Filter by brands:</label>
+            <select name="brand" id="brand-select"> </select>
+          </div>
+        </div>
+        <div id="sort">
+          <label for="sort-select">Sort by:</label>
+          <select name="sort" id="sort-select">
+            <option value="name-asc">Name</option>
+            <option value="price-asc">Cheaper</option>
+            <option value="price-desc">Expensive</option>
+            <option value="date-asc">Recently released</option>
+            <option value="date-desc">Anciently released</option>
+          </select>
+        </div>
+    </section>
+    <section id="products">
+    </section>
     <script type="module" charset="UTF-8" src="portfolio.js"></script>
   </body>
 </html>

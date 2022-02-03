@@ -25,6 +25,8 @@ const selectReasonable = document.querySelector('#reasonable-select');
 const selectFavorite = document.querySelector('#favorite-select');
 
 const sectionProducts = document.querySelector('#products');
+const sectionOptions = document.querySelector('#options');
+
 const spanNbProducts = document.querySelector('#nbProducts');
 const spanNewProducts = document.querySelector('#newProducts');
 const spanP50 = document.querySelector('#p50');
@@ -96,18 +98,11 @@ const renderProducts = products => {
                           x.name > y.name ? 1 : -1
       );
 
-
-  sectionProducts.innerHTML = '<h2>Products</h2>';
   if (products.length > 0)
   {
     const table = document.createElement('table');
     table.className = 'styled-table';
-    table.style.maxWidth = '1200px';
-    table.style.border = '1px solid black';
-    table.style.marginLeft = 'auto';
-    table.style.marginRight = 'auto';
     let head = table.createTHead();
-    head.style.textAlign = 'center';
     let row = head.insertRow();
     // for (let key of Object.keys(products[0])) {
     //   let th = document.createElement("th");
@@ -137,6 +132,7 @@ const renderProducts = products => {
     let body = table.createTBody();
     products.forEach(function(obj, i) {
       let row = body.insertRow();
+      row.align = 'center';
       let cell = row.insertCell();
       let link = document.createElement('a');
       link.href = obj.link;
@@ -198,13 +194,13 @@ const renderProducts = products => {
     td.width = '100px';
 
     var td = table.rows[0].cells[2]; //Name
-    td.width = '300px';
+    td.width = '220px';
 
     var td = table.rows[0].cells[3]; //Price
-    td.width = '50px';
+    td.width = '80px';
 
     var td = table.rows[0].cells[4]; //Date
-    td.width = '150px';
+    td.width = '130px';
 
     var td = table.rows[0].cells[5]; //Fav
     td.width = '50px';
@@ -224,21 +220,21 @@ const renderProducts = products => {
 /** Funcs helper */
 
 function checkIfImageExists(url, callback) {
-  const img = new Image();
-
-  img.src = url;
-
-  if (img.complete) {
-    callback(true);
-  } else {
-    img.onload = () => {
+    const img = new Image();
+  
+    img.src = url;
+  
+    if (img.complete) {
       callback(true);
-    };
-    
-    img.onerror = () => {
-      callback(false);
-    };
-  }
+    } else {
+      img.onload = () => {
+        callback(true);
+      };
+      
+      img.onerror = () => {
+        callback(false);
+      };
+    }
 }
 
 function padTo2Digits(num) {
@@ -437,8 +433,11 @@ selectFavorite.addEventListener('change', event => {
 
 
 
-document.addEventListener('DOMContentLoaded', () =>
+document.addEventListener('DOMContentLoaded', () =>{
   fetchProducts(1, 12)
     .then(setCurrentProducts)
-    .then(() => render(currentProducts, currentPagination))
+    .then(() => render(currentProducts, currentPagination));
+  
+  
+  }
 );
