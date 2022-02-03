@@ -98,27 +98,13 @@ const renderProducts = products => {
                           x.name > y.name ? 1 : -1
       );
 
+  $('#products').empty();
   if (products.length > 0)
   {
-    $('.styled-table').remove();
     const table = document.createElement('table');
     table.className = 'styled-table';
     let head = table.createTHead();
     let row = head.insertRow();
-    // for (let key of Object.keys(products[0])) {
-    //   let th = document.createElement("th");
-    //   let text = document.createTextNode(key);
-    //   th.appendChild(text);
-    //   row.appendChild(th);
-    // }
-    // products.forEach(function(i, ind) {
-    //   let row = table.insertRow();
-    //   for (let key in i) {
-    //     let cell = row.insertCell();
-    //     let text = document.createTextNode(i[key]);
-    //     cell.appendChild(text);
-    //   }
-    // });
 
     let properties = ["Picture", "Brand", "Name", "Price", "Date released", "Favorite"];
     for (let i = 0; i < properties.length; i++)
@@ -211,9 +197,15 @@ const renderProducts = products => {
   }
   else
   {
+    const div = document.createElement('div');
+    div.style.textAlign ='center';
+    div.style.margin = '2em auto 0em';
     const span = document.createElement('span');
     span.innerHTML = "No products available with these filters !";
-    sectionProducts.appendChild(span);
+    span.style.fontSize='130%';
+    span.style.color='red';
+    div.appendChild(span);
+    sectionProducts.appendChild(div);
   }
 
 };
@@ -236,11 +228,11 @@ function checkIfImageExists(url, callback) {
         callback(false);
       };
     }
-}
+};
 
 function padTo2Digits(num) {
   return num.toString().padStart(2, '0');
-}
+};
 
 function formatDate(date) {
   return [
@@ -248,7 +240,7 @@ function formatDate(date) {
     padTo2Digits(date.getMonth() + 1),
     date.getFullYear(),
   ].join('/');
-}
+};
 
 /**
  * Render page selector
@@ -270,7 +262,7 @@ const renderPagination = pagination => {
  * @param  {Object} pagination
  */
 const renderIndicators = pagination => {
-  const {pageSize} = pagination; //count
+  const pageSize = selectFavorite.checked ? fav.length : pagination.pageSize; //count
 
   let products = selectFavorite.checked ? [...fav] : [...currentProducts];
 
@@ -317,7 +309,7 @@ const renderFilters = () => {
 
   selectBrand.selectedIndex = choices.brands;
 
-}
+};
 
 const render = (products, pagination) => {
   renderFilters();
