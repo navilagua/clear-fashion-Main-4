@@ -273,13 +273,14 @@ const renderPagination = pagination => {
  * @param  {Object} pagination
  */
 const renderIndicators = pagination => {
-  const {count} = pagination; //count
+  const {pageSize} = pagination; //count
+
+  let products = selectFavorite.checked ? [...fav] : [...currentProducts];
 
   var d = new Date();
   d.setDate(d.getDate() - 14);
-  let newProd = currentProducts.filter((o, index) => new Date(o.released) > d).length;
+  let newProd = products.filter((o, index) => new Date(o.released) > d).length;
 
-  let products = [...currentProducts];
   products.sort((x, y) => x.price > y.price ? 1 : -1);
   let p5OPrice = products[(products.length * 50 / 100) | 0].price;
   let p90Price = products[(products.length * 90 / 100) | 0].price;
@@ -288,7 +289,7 @@ const renderIndicators = pagination => {
   products.sort((x, y) => new Date(x.released) < new Date(y.released)  ? 1 : -1);
   let lastReleased = products[0].released;
 
-  spanNbProducts.innerHTML = count;
+  spanNbProducts.innerHTML = pageSize;
   spanNewProducts.innerHTML = newProd;
   spanP50.innerHTML = p5OPrice + "€";
   spanP90.innerHTML = p90Price + "€";
@@ -337,6 +338,7 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 selectShow.addEventListener('change', event => {
+  selectFavorite.checked = false;
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
@@ -347,6 +349,7 @@ selectShow.addEventListener('change', event => {
  * @type {[type]}
  */
 selectPage.addEventListener('change', event => {
+  selectFavorite.checked = false;
   fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
