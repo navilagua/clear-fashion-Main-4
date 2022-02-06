@@ -12,7 +12,11 @@ let uniqueBrands = ["All"];
 Array.prototype.push.apply(uniqueBrands, [...new Set(currentProducts.map(item => item.brand))]);
 
 //fav
-import { fav } from "../v2/favorites.js";
+let fav = JSON.parse(window.localStorage.getItem('favorites'));
+if (fav == null)
+{
+  fav = [];
+}
 
 // inititiate selectors;
 const selectShow = document.querySelector('#show-select');
@@ -170,27 +174,28 @@ const renderProducts = products => {
         else{
           fav.splice(fav.findIndex(item => item.name == id), 1);
         }
+        window.localStorage["favorites"] = JSON.stringify(fav);
       })
       cell.appendChild(checkbox);
     });
 
     var td = table.rows[0].cells[0]; //Image
-    td.width = '250px';
+    td.style.width = '250px';
 
     var td = table.rows[0].cells[1]; //Brand
-    td.width = '100px';
+    td.style.width = '100px';
 
     var td = table.rows[0].cells[2]; //Name
-    td.width = '220px';
+    td.style.width = '220px';
 
     var td = table.rows[0].cells[3]; //Price
-    td.width = '80px';
+    td.style.width = '80px';
 
     var td = table.rows[0].cells[4]; //Date
-    td.width = '130px';
+    td.style.width = '130px';
 
     var td = table.rows[0].cells[5]; //Fav
-    td.width = '50px';
+    td.style.width = '50px';
     
   
     sectionProducts.appendChild(table);
