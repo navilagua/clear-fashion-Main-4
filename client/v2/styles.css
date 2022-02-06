@@ -1,3 +1,10 @@
+html {
+    height: 100%;
+}
+body {
+    min-height: 100vh;
+}
+
 .styled-table {
     border-collapse: collapse;
     margin: 25px 0;
@@ -51,6 +58,7 @@
   -o-transform: scale(1.5); /* Opera */
   transform: scale(1.5);
   padding: 10px;
+  cursor: pointer;
 }
 
 h1 {
@@ -58,7 +66,9 @@ text-align: center;
 color:#02755e;
 font-weight:bold;
 font-style: oblique;
-font-size:250%;
+font-size:300%;
+margin: 0;
+padding: 0;
 }
 
 h2
@@ -104,4 +114,55 @@ h2
 #options
 {
     text-align: center;
+}
+
+.switch 
+{
+    margin: 0 10px 5px 10px;
+}
+
+.footer{
+    background:#009879;
+    
+    bottom:0;
+
+    left:0;
+    
+    width:100%;
+    
+    padding-top:100px;
+    vertical-align: middle;
+    position: relative;
+    
+    height:100px;
+    text-align: center;
+}
+.footer p, .footer2 p
+{
+    color:white;
+    margin:0;
+    top:50%;
+    left: 50%;
+    position:absolute;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.footer2
+{
+    background:#005e4b;
+    
+    width:100%;
+    
+    vertical-align: middle;
+    position: relative;
+    
+    height:50px;
+    text-align: center;
+}
+
+.bottom 
+{
+    position: relative;
+    width: 100%;
 }

@@ -4,7 +4,7 @@
 // current products on the page
 let currentProducts = [];
 let currentPagination = {};
-let choices = {reasonable_price : false, recently_released : false, brands : 0, sort : "Name"};
+let choices = {reasonable_price : false, recently_released : false, brands : 0, sort : "Name", fav: false};
 
 
 //Unique brands
@@ -204,7 +204,7 @@ const renderProducts = products => {
   {
     const div = document.createElement('div');
     div.style.textAlign ='center';
-    div.style.margin = '2em auto 0em';
+    div.style.margin = '4em auto 4em';
     const span = document.createElement('span');
     span.innerHTML = "No products available with these filters !";
     span.style.fontSize='130%';
@@ -267,9 +267,9 @@ const renderPagination = pagination => {
  * @param  {Object} pagination
  */
 const renderIndicators = pagination => {
-  const pageSize = selectFavorite.checked ? fav.length : pagination.pageSize; //count
+  const pageSize = choices.fav ? fav.length : pagination.pageSize; //count
 
-  let products = selectFavorite.checked ? [...fav] : [...currentProducts];
+  let products = choices.fav ? [...fav] : [...currentProducts];
 
   var d = new Date();
   d.setDate(d.getDate() - 14);
@@ -332,7 +332,7 @@ const render = (products, pagination) => {
  * @type {[type]}
  */
 selectShow.addEventListener('change', event => {
-  selectFavorite.checked = false;
+  selectFavorite.checked = choices.fav = false;
   fetchProducts(currentPagination.currentPage, parseInt(event.target.value))
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
@@ -343,7 +343,7 @@ selectShow.addEventListener('change', event => {
  * @type {[type]}
  */
 selectPage.addEventListener('change', event => {
-  selectFavorite.checked = false;
+  selectFavorite.checked = choices.fav = false;
   fetchProducts(parseInt(event.target.value), currentPagination.pageSize)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
@@ -355,7 +355,7 @@ selectPage.addEventListener('change', event => {
  */
 selectSort.addEventListener('change', event => {
   choices.sort = selectSort.selectedOptions[0].value;
-  if (selectFavorite.checked)
+  if (choices.fav)
   {
     render(fav, currentPagination);
   }
@@ -371,7 +371,7 @@ selectSort.addEventListener('change', event => {
  */
 selectBrand.addEventListener('change', event => {
   choices.brands = selectBrand.selectedIndex;
-  if (selectFavorite.checked)
+  if (choices.fav)
   {
     render(fav, currentPagination);
   }
@@ -387,7 +387,7 @@ selectBrand.addEventListener('change', event => {
  */
  selectRecently.addEventListener('change', event => {
   choices.recently_released = selectRecently.checked;
-  if (selectFavorite.checked)
+  if (choices.fav)
   {
     render(fav, currentPagination);
   }
@@ -403,7 +403,7 @@ selectBrand.addEventListener('change', event => {
  */
 selectReasonable.addEventListener('change', event => {
   choices.reasonable_price = selectReasonable.checked;
-  if (selectFavorite.checked)
+  if (choices.fav)
   {
     render(fav, currentPagination);
   }
@@ -418,7 +418,8 @@ selectReasonable.addEventListener('change', event => {
  * @type {[type]}
  */
 selectFavorite.addEventListener('change', event => {
-  if (selectFavorite.checked)
+  choices.fav = selectFavorite.checked;
+  if (choices.fav)
   {
     render(fav, currentPagination);
   }
