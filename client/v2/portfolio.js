@@ -163,7 +163,7 @@ const renderProducts = products => {
       checkbox.className = "table-checkbox";
       checkbox.checked = fav.some(x => x.uuid === obj.uuid);
       checkbox.addEventListener('change', e => {
-        let id = e.path[2].cells[2].innerText;
+        let id = e.currentTarget.parentNode.parentNode.getElementsByTagName("td")[2].textContent;
         if (e.currentTarget.checked){
           fav.push(currentProducts.filter(x => x.name ==  id)[0]);
         }
