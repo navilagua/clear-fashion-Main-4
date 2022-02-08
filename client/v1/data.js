@@ -1087,3 +1087,5 @@ const marketplace = [
     'date': '2020-08-25'
   }
 ];
+
+export default marketplace;
